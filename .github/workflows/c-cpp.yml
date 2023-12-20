@@ -27,7 +27,6 @@ jobs:
             cd ..
           fi
         done
-
     - name: Create release and upload ZIP file
       uses: actions/create-release@v1
       with:
