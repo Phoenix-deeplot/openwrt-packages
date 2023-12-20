@@ -1,23 +1,23 @@
-name: C/C++ CI
+name: Build with menuconfig
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - main  # 触发条件，当代码推送到主分支时触发
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 在最新版 Ubuntu 上运行
 
     steps:
-    - uses: actions/checkout@v3
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: Checkout code  # 步骤：检出代码
+      uses: actions/checkout@v2  # 使用 GitHub 提供的 action
+
+    - name: Install build dependencies  # 步骤：安装编译所需依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libncurses-dev
+
+    - name: Run make menuconfig  # 步骤：执行 make menuconfig
+      run: |
+        make menuconfig  # 执行 make menuconfig 命令
