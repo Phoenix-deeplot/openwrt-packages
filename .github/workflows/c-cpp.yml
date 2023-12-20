@@ -1,8 +1,6 @@
 name: Build with menuconfig
 
-on:
-  push:
-    branches: [ "master" ] # 触发条件，当代码推送到主分支时触发
+on: workflow_dispatch
 
 jobs:
   build:
@@ -17,6 +15,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential libncurses-dev
 
-    - name: Run make menuconfig  # 步骤：执行 make menuconfig
+    - name: Run make alist  # 步骤：执行 make menuconfig
       run: |
-        make menuconfig  # 执行 make menuconfig 命令
+        make alist  # 执行 make menuconfig 命令
