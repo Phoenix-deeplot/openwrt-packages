@@ -1,20 +1,44 @@
-name: Build with menuconfig
+name: Build and Release IPKs
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # 在最新版 Ubuntu 上运行
+  build_and_release:
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code  # 步骤：检出代码
-      uses: actions/checkout@v2  # 使用 GitHub 提供的 action
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Install build dependencies  # 步骤：安装编译所需依赖
+    - name: Set up C++ environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libncurses-dev
+        sudo apt-get install -y g++ make
 
-    - name: Run make alist  # 步骤：执行 make menuconfig
+    - name: Build and package projects
       run: |
-        make alist  # 执行 make menuconfig 命令
+        mkdir ipks  # 创建目录用于存放 IPK 文件
+        for folder in */; do
+          if [[ -d "$folder" && ! -L "$folder" ]]; then
+            cd "$folder"
+            # 替换为每个项目的编译和打包命令，将 IPK 文件放入 ipks 目录中
+            make && make install DESTDIR=install_folder && cp install_folder/*.ipk ../ipks/
+            cd ..
+          fi
+        done
+
+    - name: Package IPK files into ZIP
+      run: |
+        zip -r release_ipks.zip ipks/*  # 将收集到的 IPK 文件打包成一个 ZIP 文件
+
+    - name: Create release and upload ZIP file
+      uses: actions/create-release@v1
+      with:
+        tag_name: v1.0  # Release 的标签名
+        release_name: Release 1.0  # Release 的名称
+        body: Release description here  # Release 的描述
+        draft: false
+        prerelease: false
+        files: |
+          release_ipks.zip  # 将 ZIP 文件添加到 Release 中
