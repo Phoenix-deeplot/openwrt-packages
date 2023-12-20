@@ -28,10 +28,6 @@ jobs:
           fi
         done
 
-    #- name: Package IPK files into ZIP
-     # run: |
-        #zip -r release_ipks.zip **/**/*.ipk   # 将收集到的 IPK 文件打包成一个 ZIP 文件
-
     - name: Create release and upload ZIP file
       uses: actions/create-release@v1
       with:
