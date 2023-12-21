@@ -29,6 +29,8 @@ jobs:
         done
     - name: Create release and upload ZIP file
       uses: actions/create-release@v1
+      env:
+        MY_SECRET_TOKEN: ${{ secrets.MY_SECRET_TOKEN }}
       with:
         tag_name: v1.0  # Release 的标签名
         release_name: Release 1.0  # Release 的名称
