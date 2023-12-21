@@ -31,7 +31,7 @@ jobs:
     - name: Create release and upload ZIP file
       uses: actions/create-release@v1
       env:
-        RELEASE_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_GITHUB: ${{ secrets.RELEASE_TOKEN }}
       with:
         tag_name: v1.0  # Release 的标签名
         release_name: Release 1.0  # Release 的名称
